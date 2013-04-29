@@ -21,7 +21,7 @@ public class Particle {
 		this.radius = radius;
 		this.loc = loc;
 		this.dir = dir;
-		System.out.println(dir);
+//		System.out.println(dir);
 		age = 0;
 		dead = false;
 		phase = 0;
@@ -31,7 +31,6 @@ public class Particle {
 		age++;
 		loc.x += dir.x;
 		loc.y += dir.y;
-		if(age > lifespan) dead = true;
 		if(phase == 0 && age > 80){
 			phase = 1;
 		}
@@ -46,19 +45,19 @@ public class Particle {
 	}
 	
 	private void phase1() {
-		dir.x /= 1.0001d;
-		dir.y /= 1.0001d;
+		dir.x /= 1.01d;
+		dir.y /= 1.01d;
 		
-		if(age > 500){
+		if(age > 200){
 			phase = 2;
 		}
 	}
 	
 	private void phase2(){
-		dir.x /= 1.01d;
-		dir.y /= 1.01d;
+		dir.x /= 1.02d;
+		dir.y /= 1.02d;
 		
-		if(age > 1500){
+		if(age > 700){
 			dir.x = 0;
 			dir.y = 0;
 			phase = 3;
@@ -68,6 +67,7 @@ public class Particle {
 	private void phase3(){
 		dir.x = 0;
 		dir.y = 0;
+		dead = true;
 	}
 
 	public void draw(Graphics2D g2){

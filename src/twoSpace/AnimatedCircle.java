@@ -13,33 +13,42 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 
 	ParticleController p;
 	double angle;
+	double interval;
+	int count;
 	int age;
+	int generationrate;
+	int particleRadius;
+	int centerRadius;
 
 	public AnimatedCircle(){
 		setSize(800,800);
 		setPreferredSize(getSize());
 		setBackground(Color.DARK_GRAY);
 		setForeground(Color.CYAN);
-		Timer t = new Timer(1000/60, this);
+		Timer t = new Timer(1000/30, this);
 		t.start();
 
 		p = new ParticleController(getWidth(),getHeight());
 
 		angle = 0;
 		age = 0;
-
+		count = 0;
+		generationrate = 25;
+		particleRadius = 7;
+		centerRadius = 40;
+		
 		init1();
 	}
 
 	private void init1(){
-		int points = 20;
-		double interval = (2*Math.PI)/(double)points;
-		double angle = 0;
-		for(int i = 0; i < points; i++){
+		int points = 1;
+		interval = (.05*Math.PI)/(double)points;
+		for(int i = 1; i <= points; i++){
 			double x = Math.cos(angle);
 			double y = Math.sin(angle);
-			p.add(new Particle(5, x*100 + getWidth()/2, y*100 + getHeight()/2, x*i/15f, y*i/15f));
+			p.add(new Particle(particleRadius, x*centerRadius + getWidth()/2, y*centerRadius + getHeight()/2, x*i*2, y*i*2));
 			angle += interval;
+			count++;
 		}
 	}
 
@@ -48,8 +57,25 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		g2.setColor(Color.LIGHT_GRAY);
 		g2.fillRect(0, 0, getWidth(), getHeight());
 
-		g2.setColor(Color.CYAN);
 		p.draw(g2);
+		
+//		for(int i = 0; i < count; i++){
+//			double x = Math.cos(interval * i) *50 + getWidth()/2 - 10;
+//			double y = Math.sin(interval * i) *50 + getHeight()/2 - 10;
+//			g2.fillOval((int)x, (int)y, 20, 20);
+//		}
+		
+		Color c = g2.getColor();
+		int r = c.getRed();
+		int gr = c.getGreen();
+		int b = c.getBlue();
+		double progression = ((double)age%generationrate)/generationrate/2 + 0.5;
+		if(progression > 1d) progression = 1;
+		int a = (int)(255 * progression);
+		g2.setColor(new Color(r,gr,b,a));
+		
+		
+		g2.fillOval(getWidth()/2-centerRadius, getHeight()/2-centerRadius, centerRadius*2, centerRadius*2);
 	}
 
 	public void paint(Graphics g){
@@ -58,6 +84,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 
 	public void update(){
 		p.update();
+		if(angle > 6.28) angle = 0;
 	}
 
 	@Override
@@ -65,6 +92,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		update();
 		repaint();
 		age++;
+		if(age % generationrate ==0) init1();
 	}
 
 
