@@ -25,7 +25,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		setPreferredSize(getSize());
 		setBackground(Color.DARK_GRAY);
 		setForeground(Color.CYAN);
-		Timer t = new Timer(1000/30, this);
+		Timer t = new Timer(1000/60, this);
 		t.start();
 
 		p = new ParticleController(getWidth(),getHeight());
@@ -33,7 +33,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		angle = 0;
 		age = 0;
 		count = 0;
-		generationrate = 25;
+		generationrate = 20;
 		particleRadius = 7;
 		centerRadius = 40;
 		
@@ -42,7 +42,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 
 	private void init1(){
 		int points = 1;
-		interval = (.05*Math.PI)/(double)points;
+		interval = (0.05*Math.PI)/(double)points;
 		for(int i = 1; i <= points; i++){
 			double x = Math.cos(angle);
 			double y = Math.sin(angle);
@@ -92,7 +92,7 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		update();
 		repaint();
 		age++;
-		if(age % generationrate ==0) init1();
+		if(age % generationrate == 0) init1();
 	}
 
 
