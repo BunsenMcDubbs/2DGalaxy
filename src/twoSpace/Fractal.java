@@ -26,9 +26,9 @@ public class Fractal extends JPanel implements ActionListener, MouseListener, Co
 	//performance (overlapping/clearing)
 	
 	public Fractal(){
-		setSize(650,650);
+		setSize(1200,800);
 		setPreferredSize(getSize());
-		setBackground(Color.DARK_GRAY);
+		setBackground(Color.darkGray);
 		setForeground(Color.CYAN);
 		
 		time = 0;
@@ -41,12 +41,12 @@ public class Fractal extends JPanel implements ActionListener, MouseListener, Co
 	public void init(){
 		l = new ArrayList<Line>();
 		int sides = 3;
-		double interval = Math.PI*2/sides;
-		double shift = 2d;
-		double r = 450d;
+		float interval = (float)Math.PI*2/sides;
+		float shift = 0.001f;
+		float r = 600f;
 		for(int i = 0; i < sides; i++){
-			l.add(new Line(r, (double)interval*i + shift, r, (double)interval*(i+1) + shift));
-			l.get(i).center = new Point2D.Double(0,0);
+			l.add(new Line(r, (float)interval*i + shift, r, (float)interval*(i+1) + shift));
+			l.get(i).center = new Point2D.Float(0,0);
 		}
 	}
 	
@@ -57,52 +57,47 @@ public class Fractal extends JPanel implements ActionListener, MouseListener, Co
 			super.paint(g2);
 			
 		g2.setColor(Color.cyan);
-		g2.translate(getWidth() / 2, getHeight() / 2);
+		g2.translate(600, 400);
 		for (Line line : l)
 			line.draw(g2);
 	}
 	
-	public static Point2D.Double cartToPol(Point2D.Double p){
-		return cartToPol(p, new Point2D.Double(0,0));
+	public static Point2D.Float cartToPol(Point2D.Float p){
+		return cartToPol(p, new Point2D.Float(0,0));
 	}
 	
-	public static Point2D.Double cartToPol(Point2D.Double p, Point2D.Double center){
-		double x = p.x - center.x;
-		double y = p.y - center.y;
+	public static Point2D.Float cartToPol(Point2D.Float p, Point2D.Float center){
+		float x = p.x - center.x;
+		float y = p.y - center.y;
 		boolean q3 = (y < 0 && x < 0);
 		boolean q2 = (y > 0 && x < 0);
 		
-		double r = Math.sqrt(x*x + y*y);
-		double theta = Math.atan(y/x);
+		float r = (float) Math.sqrt(x*x + y*y);
+		float theta = (float) Math.atan(y/x);
 		
 		if(q3)
 			theta += Math.PI;
 		else if (q2)
 			theta -= Math.PI;
 		
-		return new Point2D.Double(r,theta);
+		return new Point2D.Float(r,theta);
 	}
 	
-	public static Point2D.Double polToCart(Point2D.Double p){
-		return polToCart(p, new Point2D.Double(0,0));
+	public static Point2D.Float polToCart(Point2D.Float p){
+		return polToCart(p, new Point2D.Float(0,0));
 	}
 	
-	public static Point2D.Double polToCart(Point2D.Double p, Point2D.Double center){
-		double r = p.x;
-		double theta = p.y;
+	public static Point2D.Float polToCart(Point2D.Float p, Point2D.Float center){
+		float r = p.x;
+		float theta = p.y;
 		
 		while (theta < 0)
 			theta += (2 * Math.PI);
 		
-//		if(theta > Math.PI && theta < Math.PI*0.5)
-//			System.out.println("Q2");
-//		else if(theta > Math.PI *2)
-//			System.out.println("Q5");
+		float x = r * (float) Math.cos(theta) + center.x;
+		float y = r * (float) Math.sin(theta) + center.y;
 		
-		double x = r * Math.cos(theta) + center.x;
-		double y = r * Math.sin(theta) + center.y;
-		
-		return new Point2D.Double(x,y);
+		return new Point2D.Float(x,y);
 	}
 	
 	@Override
@@ -120,11 +115,9 @@ public class Fractal extends JPanel implements ActionListener, MouseListener, Co
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		System.out.print("Generation: " + time + "\n\tStart");
-		int x = e.getX()-getWidth()/2;
-		int y = e.getY()-getHeight()/2;
-//		System.out.println(x + " " + y);
-		for(Line line : l)
-			line.split();
+//		for(int i = 0; i < 8; i++)
+			for(Line line : l)
+				line.split();
 		repaint();
 		
 		System.out.println("\tEnd");

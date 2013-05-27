@@ -5,78 +5,70 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
+import java.awt.geom.Point2D.Float;
 
 public class Line {
 
-	Point2D.Double start;
-	Point2D.Double end;
-	Point2D.Double center;
+	Point2D.Float start;
+	Point2D.Float end;
+	Point2D.Float center;
 
 	Line mLeft, mRight, left, right, bottom;
 
 	boolean split;
 	boolean pol;
-	boolean centered;
+
+//	int gen;
 
 	public Line(int x1, int y1, int x2, int y2){
-		start = new Point2D.Double(x1, y1);
-		end = new Point2D.Double(x2, y2);
-		center = new Point2D.Double(0,0);
-		pol = false;
-		split = false;
-		centered = false;
+		this(new Point2D.Float(x1,y1), new Point2D.Float(x2,y2), new Point2D.Float(0,0));
 	}
 
-	public Line(double r, double theta, double r2, double theta2){
-		start = new Point2D.Double(r, theta);
-		end = new Point2D.Double(r2, theta2);
-		center = new Point2D.Double(0,0);
-		pol = true;
-		split = false;
-		centered = false;
+	public Line(float r, float theta, float r2, float theta2){
+		this (Fractal.polToCart(new Point2D.Float(r, theta)), Fractal.polToCart(new Point2D.Float(r2, theta2)), new Point2D.Float(0,0));
 	}
 
-	public Line(Point2D.Double start, Point2D.Double end, Point2D.Double center) {
+	public Line(Point2D.Float start, Point2D.Float end, Point2D.Float center) {
 		this.start = start;
 		this.end = end;
 		this.center = center;
 		pol = false;
 		split = false;
-		centered = false;
+//		gen = 0;
 	}
 
 	public void split(){
 		if (split == true) {
 			mLeft.split();
 			mRight.split();
+			bottom.split();
 			left.split();
 			right.split();
-			bottom.split();
 			return;
 		}
 		split = true;
+//		gen++;
 		polToCart();
 
-		Point2D.Double mid = midpoint(start, end);
+		Point2D.Float mid = midpoint(start, end);
 
-		Point2D.Double leftTemp = midpoint(start, mid);
-		Point2D.Double rightTemp = midpoint(mid, end);
+		Point2D.Float leftTemp = midpoint(start, mid);
+		Point2D.Float rightTemp = midpoint(mid, end);
 
-		double dist = Math.sqrt(Math.pow((leftTemp.x - rightTemp.x),2) + Math.pow((leftTemp.y - rightTemp.y),2));
-		dist = 1.7320508075688772 * dist / 2;
+		float dist = (float) Math.sqrt(Math.pow((leftTemp.x - rightTemp.x),2) + Math.pow((leftTemp.y - rightTemp.y),2));
+		dist = 1.7320508075688772f * dist / 2;
 		mid = Fractal.cartToPol(mid, center);
 		mid.x += dist;
-		mid = Fractal.polToCart(mid, center);
 
-		Point2D.Double cMid = Fractal.cartToPol(mid, center);
-		Point2D.Double cLeft = Fractal.cartToPol(start, center);
-		Point2D.Double cRight = Fractal.cartToPol(end, center);
+		Point2D.Float cMid = (Float) mid.clone();
+		mid = Fractal.polToCart(mid, center);
+		Point2D.Float cLeft = Fractal.cartToPol(start, center);
+		Point2D.Float cRight = Fractal.cartToPol(end, center);
 
 		cMid.x -= dist/1.5;
 
-		double sidedist = Math.sqrt((leftTemp.x - start.x) * (leftTemp.x - start.x) + (leftTemp.y - start.y) * (leftTemp.y - start.y));
-		sidedist = 1.7320508075688772 * sidedist / 3;
+		float sidedist = (float) Math.sqrt((leftTemp.x - start.x) * (leftTemp.x - start.x) + (leftTemp.y - start.y) * (leftTemp.y - start.y));
+		sidedist = 1.7320508075688772f * sidedist / 3;
 
 		cLeft.x -= sidedist;
 		cRight.x -= sidedist;
@@ -93,8 +85,8 @@ public class Line {
 
 	}
 
-	public static Point2D.Double midpoint(Point2D.Double start, Point2D.Double end){
-		return new Point2D.Double(start.x/2 + end.x/2, start.y/2 + end.y/2);
+	public static Point2D.Float midpoint(Point2D.Float start, Point2D.Float end){
+		return new Point2D.Float(start.x/2 + end.x/2, start.y/2 + end.y/2);
 	}
 
 	public boolean cartToPol(){
@@ -115,35 +107,31 @@ public class Line {
 
 	public void draw(Graphics2D g2){
 
-		g2.setColor(Color.cyan);
-//		g2.setStroke(new BasicStroke(2));
+		g2.setColor(Color.lightGray);
+		//		g2.setStroke(new BasicStroke(2));
 		polToCart();
-		if(!split) g2.draw(new Line2D.Double(start, end));
+		if(!split) g2.draw(new Line2D.Float(start, end));
 		else{
-//			if(left.split){
-				left.draw(g2);
-				right.draw(g2);
-				bottom.draw(g2);
-//			}
+			left.draw(g2);
+			right.draw(g2);
+			bottom.draw(g2);
 			mLeft.draw(g2);
 			mRight.draw(g2);
-			if (!left.split){
-//				g2.setColor(Color.green);
-//				g2.setStroke(new BasicStroke(1));
-//				Point2D.Double ltemp = midpoint(this.left.start, this.left.end);
-//				g2.drawLine((int)ltemp.x, (int)ltemp.y, (int)left.center.x, (int)left.center.y);
-//				g2.setColor(Color.red);
-//				Point2D.Double rtemp = midpoint(this.right.start, this.right.end);
-//				g2.drawLine((int)rtemp.x, (int)rtemp.y, (int)right.center.x, (int)right.center.y);
-//				g2.setColor(Color.orange);
-//				Point2D.Double mrtemp = midpoint(this.mRight.start, this.mRight.end);
-//				g2.drawLine((int)mrtemp.x, (int)mrtemp.y, (int)mRight.center.x, (int)mRight.center.y);
-//				g2.setColor(Color.magenta);
-//				Point2D.Double mltemp = midpoint(this.mLeft.start, this.mLeft.end);
-//				g2.drawLine((int)mltemp.x, (int)mltemp.y, (int)mLeft.center.x, (int)mLeft.center.y);
-
-
-			}
+			/*if (!left.split){
+				g2.setColor(Color.green);
+				g2.setStroke(new BasicStroke(1));
+				Point2D.Float ltemp = midpoint(this.left.start, this.left.end);
+				g2.drawLine((int)ltemp.x, (int)ltemp.y, (int)left.center.x, (int)left.center.y);
+				g2.setColor(Color.red);
+				Point2D.Float rtemp = midpoint(this.right.start, this.right.end);
+				g2.drawLine((int)rtemp.x, (int)rtemp.y, (int)right.center.x, (int)right.center.y);
+				g2.setColor(Color.orange);
+				Point2D.Float mrtemp = midpoint(this.mRight.start, this.mRight.end);
+				g2.drawLine((int)mrtemp.x, (int)mrtemp.y, (int)mRight.center.x, (int)mRight.center.y);
+				g2.setColor(Color.magenta);
+				Point2D.Float mltemp = midpoint(this.mLeft.start, this.mLeft.end);
+				g2.drawLine((int)mltemp.x, (int)mltemp.y, (int)mLeft.center.x, (int)mLeft.center.y);
+			}*/
 		}
 
 	}
