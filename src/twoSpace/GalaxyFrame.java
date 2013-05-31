@@ -22,12 +22,17 @@ public class GalaxyFrame extends JFrame{
 
 	private void init() {
 //		add(new AnimatedCircle());
-		Fractal f = new Fractal();
-		add(f);
-		addMouseListener(f);
-		addComponentListener(f);
+
+//		Fractal f = new Fractal();
+//		add(f);
+//		addMouseListener(f);
+//		addComponentListener(f);
+		
+		Ridge r = new Ridge();
+		addMouseListener(r);
+		add(r);
+		
 		setSize();
-//		setBackground(bg);
 	}
 	
 	private void setSize() {
