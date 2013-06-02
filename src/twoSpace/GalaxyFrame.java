@@ -15,19 +15,25 @@ public class GalaxyFrame extends JFrame{
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		init();
-
 		setVisible(true);
 	}
 
-	private void init() {
-//		add(new AnimatedCircle());
+	public void initAC() {
+		add(new AnimatedCircle());
 
-//		Fractal f = new Fractal();
-//		add(f);
-//		addMouseListener(f);
-//		addComponentListener(f);
+		setSize();
+	}
+	
+	public void initTF(){
+		Fractal f = new Fractal();
+		add(f);
+		addMouseListener(f);
+		addComponentListener(f);
 		
+		setSize();
+	}
+	
+	public void initRL(){
 		Ridge r = new Ridge();
 		addMouseListener(r);
 		add(r);
