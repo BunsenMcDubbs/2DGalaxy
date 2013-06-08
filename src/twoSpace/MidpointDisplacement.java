@@ -8,8 +8,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import twoSpace.GalaxyFrame;
-
 public class MidpointDisplacement extends JPanel {
 	
 	float[][] map;
