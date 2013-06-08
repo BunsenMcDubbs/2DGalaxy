@@ -128,6 +128,11 @@ public class Fractal extends JPanel implements ActionListener, MouseListener, Co
 		
 	}
 
+	
+	public static void main(String [] args){
+		GalaxyFrame f = new GalaxyFrame();
+		f.initTF();
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {

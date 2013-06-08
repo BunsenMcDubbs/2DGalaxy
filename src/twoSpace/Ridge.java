@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 
 public class Ridge extends JPanel implements ActionListener, MouseListener{
 	
-	RidgeLine r1, r2, r3, r4;
+	RidgeLine r1, r2, r3, r4; //Four hardcoded lines to seed the mountain shape
 	
-	BufferedImage canvas;
+	BufferedImage canvas; //not yet implemented - ignore all references to "canvas"
 	
 	public Ridge(){
 		setSize(800,400);
@@ -28,6 +28,8 @@ public class Ridge extends JPanel implements ActionListener, MouseListener{
 		init();
 	}
 	
+	
+	//Hardcoding the seeds
 	void init(){
 		r1 = new RidgeLine(-400,0,-300,-200,100);
 		r2 = new RidgeLine(-300,-200,0,-50,100);
@@ -40,7 +42,6 @@ public class Ridge extends JPanel implements ActionListener, MouseListener{
 		r2.split();
 		r3.split();
 		r4.split();
-		System.out.println("a;dlskfja;dlkf");
 	}
 	
 	public void paint(Graphics g){
@@ -71,6 +72,11 @@ public class Ridge extends JPanel implements ActionListener, MouseListener{
 	public void mouseClicked(MouseEvent arg0) {
 		split();
 		repaint();
+	}
+	
+	public static void main(String [] args){
+		GalaxyFrame f = new GalaxyFrame();
+		f.initRL();
 	}
 
 	@Override

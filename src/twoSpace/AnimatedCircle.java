@@ -94,6 +94,11 @@ public class AnimatedCircle extends JPanel implements ActionListener{
 		age++;
 		if(age % generationrate == 0) init1();
 	}
+	
+	public static void main(String [] args){
+		GalaxyFrame f = new GalaxyFrame();
+		f.initAC();
+	}
 
 
 }
