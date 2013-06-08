@@ -15,7 +15,7 @@ public class GalaxyFrame extends JFrame{
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		init();
+//		init();
 
 		setVisible(true);
 	}
@@ -32,6 +32,11 @@ public class GalaxyFrame extends JFrame{
 		addMouseListener(r);
 		add(r);
 		
+		setSize();
+	}
+	
+	public void initMD(){
+		add(new MidpointDisplacement());
 		setSize();
 	}
 	
