@@ -89,10 +89,10 @@ public class MidpointDisplacement extends JPanel {
 		float tlh = get(ul), trh = get(ur), blh = get(ll), brh = get(lr);
 		float mid = (tlh + trh + blh + brh)/4 + ((float)Math.random()-0.5f) * smooth;
 		
-		float lmidh = (tlh + blh)/2, //left midpoint
-		rmidh = (trh + brh)/2, //right midpoint
-		tmidh = (tlh + trh)/2, //top midpoint
-		bmidh = (blh + brh)/2; //bottom midpoint
+		float lmidh = (tlh + blh)/2 + (float)(Math.random() - 0.5f) * smooth * 0.005f, //left midpoint height
+		rmidh = (trh + brh)/2 + (float)(Math.random() - 0.5f) * smooth * 0.005f, //right midpoint height
+		tmidh = (tlh + trh)/2 + (float)(Math.random() - 0.5f) * smooth * 0.005f, //top midpoint height
+		bmidh = (blh + brh)/2 + (float)(Math.random() - 0.5f) * smooth * 0.005f; //bottom midpoint height
 		
 		Point lmid = midpoint(ul,ll),
 		rmid = midpoint(ur,lr),
